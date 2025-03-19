@@ -117,6 +117,51 @@ Finally, if that still doesn't work and you want to fully reset your VM to facto
 ### libpaddle: The specified module could not be found
 The OCR library used by OmniParser is Paddle that depends on C++ Redistributable on Windows. If you are on Windows ensure that you have installed it, then rerun installing the requirements.txt. More details [here](https://github.com/microsoft/OmniParser/issues/140#issuecomment-2670619168).
 
+## Setting up the Project on Windows 11
+
+To set up the project on Windows 11, follow these steps:
+
+1. **Install Docker Desktop**: Download and install Docker Desktop from the [official website](https://www.docker.com/products/docker-desktop).
+
+2. **Download Windows 11 ISO**: Visit the [Microsoft Evaluation Center](https://info.microsoft.com/ww-landing-windows-11-enterprise.html), accept the Terms of Service, and download a **Windows 11 Enterprise Evaluation (90-day trial, English, United States)** ISO file [~6GB]. Rename the file to `custom.iso` and copy it to the directory `OmniParser/omnitool/omnibox/vm/win11iso`.
+
+3. **Open PowerShell as Administrator**: Right-click on the Start menu and select "Windows PowerShell (Admin)".
+
+4. **Navigate to the Project Directory**: Use the `cd` command to navigate to the project directory. For example:
+   ```powershell
+   cd C:\path\to\OmniParser\omnitool\omnibox\scripts
+   ```
+
+5. **Build and Install the Docker Container**: Run the following command to build the Docker container and install the ISO to a storage folder:
+   ```powershell
+   .\manage_vm.ps1 create
+   ```
+
+6. **Manage the VM**: After the initial setup, you can manage the VM using the following commands:
+   - Start the VM:
+     ```powershell
+     .\manage_vm.ps1 start
+     ```
+   - Stop the VM:
+     ```powershell
+     .\manage_vm.ps1 stop
+     ```
+   - Delete the VM:
+     ```powershell
+     .\manage_vm.ps1 delete
+     ```
+
+7. **Access the VM**: You can access the VM using the NoVNC viewer at [http://localhost:8006/vnc.html?view_only=1&autoconnect=1&resize=scale](http://localhost:8006/vnc.html?view_only=1&autoconnect=1&resize=scale).
+
+8. **Run the Gradio UI**: Navigate to the gradio directory and start the server:
+   ```powershell
+   cd C:\path\to\OmniParser\omnitool\gradio
+   conda activate omni
+   python app.py --windows_host_url localhost:8006 --omniparser_server_url localhost:8000
+   ```
+
+9. **Open the Gradio UI**: Open the URL provided in the terminal output, set your API Key, and start using the AI agent.
+
 ## Risks and Mitigations
 To align with the Microsoft AI principles and Responsible AI practices, we conduct risk mitigation by training the icon caption model with Responsible AI data, which helps the model avoid inferring sensitive attributes (e.g.race, religion etc.) of the individuals which happen to be in icon images as much as possible. At the same time, we encourage user to apply OmniParser only for screenshot that does not contain harmful/violent content. For the OmniTool, we conduct threat model analysis using Microsoft Threat Modeling Tool. We advise human to stay in the loop in order to minimize risk.
 
